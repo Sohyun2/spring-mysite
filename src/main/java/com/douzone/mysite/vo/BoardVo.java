@@ -1,7 +1,7 @@
 package com.douzone.mysite.vo;
 
 public class BoardVo {
-	private long no;
+	private long no; 
 	private String title;
 	private String contents;
 	private String writeDate;
