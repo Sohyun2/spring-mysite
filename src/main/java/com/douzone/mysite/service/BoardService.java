@@ -52,28 +52,33 @@ public class BoardService {
 	public Map<String, Object> detail(long no) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		// 글 가져오기
-		List<BoardVo> list = new BoardDao().getList();
+		List<BoardVo> list = boardDao.getList();
 		for (BoardVo vo : list) {
 			if (vo.getNo() == no) {
 				// 조회수 업데이트
-				new BoardDao().updateHit(vo);
+				boardDao.updateHit(vo);
 				map.put("vo", vo);
 				break;
 			}
 		}
 
 		// 댓글 리스트 가져오기
-		List<CommentVo> cList = new BoardDao().getListComment(no);
+		List<CommentVo> cList = boardDao.getListComment(no);
+		System.out.println(cList);
+		
 		map.put("cList", cList);
 		
 		return map;
 	}
 	
 	public void insert(UserVo userVo, BoardVo boardVo) {
-
+		System.out.println(userVo + " -- " + boardVo);
+		
 		boardVo.setUserNo(userVo.getNo());		
+		System.out.println(boardVo);
+		
 		boardDao.insert(boardVo);
 	}
 
@@ -88,7 +93,7 @@ public class BoardService {
 
 	public void reply(Long no, BoardVo vo, UserVo userVo) {
 
-		BoardVo boardVo = boardDao.selectBoard(no);
+		BoardVo boardVo = boardDao.selectBoard(no); 
 		
 		int oNo = boardVo.getoNo();
 		int gNo = boardVo.getgNo();
@@ -99,14 +104,20 @@ public class BoardService {
 		vo.setDepth(++depth);
 		vo.setUserNo(userVo.getNo());
 		vo.setNo(no);
-		
+
 		boardDao.insertReply(vo);
 	}
 
+	// 댓글 입력
 	public void comment(Long no, CommentVo vo, UserVo userVo) {
 		vo.setBoardNo(no); // 글번호
 		vo.setUserNo(userVo.getNo());
 		
 		boardDao.insertComment(vo);
+	}
+
+	// 댓글 삭제
+	public void commentDelete(Long commentNo) {
+		boardDao.cDelete(commentNo);
 	}
 }

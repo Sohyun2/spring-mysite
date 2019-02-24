@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<!-- list 목록 뽑아오기 -->
+	<select id="getListByPage" parameterType="map" resultType="boardvo">
+		<![CDATA[
+			select 	board.no, board.title, board.contents, 
+					board.write_date as writeDate, 
+					board.hit, 
+					board.g_no as gNo, 
+					board.o_no as oNo, 
+					board.depth,
+					board.user_no as userNo,
+					user.name as userName
+			from 	board, user
+			where 	board.user_no = user.no
+			order 	by board.g_no desc, board.o_no asc
+			limit #{limit } offset #{offset }
+		]]>
+	</select>
+	
+	<select id="getList" resultType="boardvo">
+		<![CDATA[
+			select 	board.no, board.title, board.contents, 
+					board.write_date as writeDate, 
+					board.hit, 
+					board.g_no as gNo, 
+					board.o_no as oNo, 
+					board.depth, 
+					board.user_no as userNo,
+					user.name as userName
+			from 	board, user
+			where 	board.user_no = user.no
+			order 	by board.g_no desc, board.o_no asc
+		]]>
+	</select>
+	
+	<select id="getGNo" resultType="Integer">
+		<![CDATA[
+			select max(g_no) from board
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="boardvo">
+		<![CDATA[
+			insert into board
+			values (null, #{title }, #{contents }, now(), 0, #{gNo }, 1, 0, #{userNo })
+		]]>
+	</insert>
+	
+	<!-- 게시글 삭제 -->
+	<delete id="delete" parameterType="map">
+		<![CDATA[
+			delete from board where no = #{no }
+		]]>		
+	</delete>
+	
+	<!-- 게시글 수정 -->
+	<update id="modify" parameterType="boardvo">
+		<![CDATA[
+			update board 
+			set title=#{title }, contents = #{contents }, write_date = now()
+			where no = #{no }
+		]]>
+		
+	</update>
+	
+	<!-- 조회수 업데이트 -->
+	<select id="getHit" parameterType="boardvo" resultType="int">
+		<![CDATA[
+			select hit from board where no = #{no }
+		]]>
+	</select>
+	
+	<update id="updateHit" parameterType="map">
+		<![CDATA[
+			update board set hit = #{hit } where no = #{no }
+		]]>
+	</update>
+	
+	
+	<!-- ======================Reply====================== -->
+	<select id="getoNo" parameterType="boardvo" resultType="int">
+		<![CDATA[
+			select max(o_no) from board where g_no = #{gNo }
+		]]>
+	</select>
+	
+	<update id="updateReply" parameterType="boardvo">
+		<![CDATA[
+			update board set o_no = o_no+1 where g_no = #{gNo } and o_no >= #{oNo }
+		]]>
+	</update>
+	
+	<insert id="replyInsert" parameterType="boardvo">
+		<![CDATA[
+			insert into board values (null, #{title }, #{contents }, now(), 0, #{gNo}, #{oNo }, #{depth }, #{userNo })
+		]]>		
+	</insert>
+	
+	
+	<!-- comment -->
+	<insert id="insertComment" parameterType="commentvo">
+		<![CDATA[
+			insert into comment values (null, #{content }, #{userNo }, #{boardNo })
+		]]>		
+	</insert>
+	
+	<select id="getCommentList" parameterType="boardvo" resultType="commentvo">
+		<![CDATA[
+			select	c.no, c.content, c.user_no as userNo, u.name as userName
+			from	comment c, user u, board b
+			where 	board_no = #{no }
+				and	c.user_no = u.no
+			    and	c.board_no = b.no
+			order by no desc
+		]]>
+	</select>
+	
+	<delete id="commentDelete" parameterType="commentvo">
+		<![CDATA[
+			delete from comment where no = #{no }
+		]]>	
+	</delete>
+	
+</mapper>

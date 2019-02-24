@@ -37,9 +37,10 @@ public class CommentVo {
 	public void setBoardNo(Long boardNo) {
 		this.boardNo = boardNo;
 	}
-	
 	@Override
 	public String toString() {
-		return "CommentVo [content=" + content + ", userNo=" + userNo + ", boardNo=" + boardNo + "]";
-	}	
+		return "CommentVo [no=" + no + ", content=" + content + ", userNo=" + userNo + ", userName=" + userName
+				+ ", boardNo=" + boardNo + "]";
+	}
+	
 }

@@ -53,7 +53,7 @@ public class BoardController {
 	}
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
 	public ModelAndView insert(HttpSession session, @ModelAttribute BoardVo vo) {
-				
+		System.out.println(vo);
 		boardService.insert((UserVo)session.getAttribute("authuser"), vo);
 		
 		ModelAndView mav = new ModelAndView();
@@ -107,6 +107,17 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/board/detail");
 		mav.addObject("no", no);
+		
+		return mav;
+	}
+	
+	@RequestMapping("/c_delete")
+	public ModelAndView cDelete(@RequestParam("no")Long boardNo, @RequestParam("c_no")Long commentNo) {
+		boardService.commentDelete(commentNo);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("redirect:/board/detail");
+		mav.addObject("no", boardNo);
 		
 		return mav;
 	}
