@@ -21,7 +21,7 @@
 					<c:when test='${param.menu == "guestbook-ajax" }'>
 						<li><a href="${pageContext.servletContext.contextPath }">이소현</a></li>
 						<li><a href="${pageContext.servletContext.contextPath }/guestbook">방명록</a></li>
-						<li class="selected"><a href="${pageContext.servletContext.contextPath }/guestbook?/ajax">방명록(Ajax)</a></li>
+						<li class="selected"><a href="${pageContext.servletContext.contextPath }/guestbook/ajax">방명록(Ajax)</a></li>
 						<li><a href="${pageContext.servletContext.contextPath }/board?page=1">게시판</a></li>
 					</c:when>
 					<c:when test='${param.menu == "board" }'>

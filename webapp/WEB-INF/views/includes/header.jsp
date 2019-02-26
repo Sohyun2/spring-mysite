@@ -5,7 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 		<div id="header">
 			<h1>
-				<a href="${pageContext.servletContext.contextPath }">MySite</a>
+				<a href="${pageContext.servletContext.contextPath }">${siteVo.title }</a>
 			</h1>
 			<ul>
 				<c:choose>

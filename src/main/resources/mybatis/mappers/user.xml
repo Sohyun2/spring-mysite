@@ -16,9 +16,25 @@
 	
 	<select id="getByEmailAndPassword" parameterType="map" resultType="uservo"> 
 		<![CDATA[
-			select no, name, email 
+			select no, name, email, role
 			from user
 			where email=#{email } and password=#{password }
+		]]>
+	</select>
+	
+	<select id="getByNo" parameterType="long" resultType="uservo">
+		<![CDATA[
+		select no, name, email, gender, role
+		  from user 
+		 where no=#{no }
+		]]>
+	</select>
+	
+	<select id="getByEmail" resultType="uservo" parameterType="string">
+		<![CDATA[
+		select no, name, email, gender 
+		from user 
+		where email=#{email }
 		]]>
 	</select>
 	

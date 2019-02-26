@@ -1,16 +1,16 @@
 package com.douzone.mysite.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.douzone.mysite.service.UserService;
 import com.douzone.mysite.vo.UserVo;
+import com.douzone.security.Auth;
+import com.douzone.security.AuthUser;
 
 @Controller
 @RequestMapping("/user")
@@ -40,58 +40,31 @@ public class UserController {
 		return "/user/login";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ModelAndView login(HttpSession session, @ModelAttribute UserVo vo) {
-		UserVo authUser = userService.login(vo);
-		String result = "fail";
-
-		if (vo != null) {
-			result = "success";
-		}
-
-		ModelAndView mav = new ModelAndView();
-
-		if (result.equals("fail")) {
-			// 로그인 실패..
-			mav.setViewName("/user/login");
-			mav.addObject("result", result);
-		} else {
-			// 로그인 성공
-
-			// session등록
-			session.setAttribute("authuser", authUser);
-			// 화면 전환
-			mav.setViewName("redirect:/main");
-		}
-		return mav;
-	}
-
-	@RequestMapping("/logout")
-	public String logout(HttpSession session) {
-		if (session != null && session.getAttribute("authuser") != null) {
-			// logout 처리
-			session.removeAttribute("authuser");
-			session.invalidate();
-		}
-		return "redirect:/main";
-	}
-	
+	@Auth
 	@RequestMapping(value="modify", method=RequestMethod.GET)
-	public String modify() {
+	public String modify(@AuthUser UserVo authUser, Model model) {
+		System.out.println( authUser );
+		
+		UserVo userVo = userService.getUser( authUser.getNo() );
+		model.addAttribute( "authuser", userVo );
+		
 		return "/user/modify";
 	}
 	
+	@Auth
 	@RequestMapping(value="modify", method=RequestMethod.POST)
-	public String modify(HttpSession session, @ModelAttribute UserVo vo) {
-
-		UserVo authUser = (UserVo) session.getAttribute("authuser");
-		
+	public String modify(@AuthUser UserVo authUser, @ModelAttribute UserVo vo) {
+		System.out.println("수정 전 authUser : " + authUser);
+		System.out.println("vo.." + vo);
 		vo.setEmail(authUser.getEmail());
 		
+		// user 수정
 		userService.modify(vo);
-		// 세션수정
-		session.setAttribute("authuser", vo);
 		
+		// session의 authUser 변경
+		authUser.setName(vo.getName());
+		System.out.println("수정 후 authUser : " + authUser);
+				
 		return "redirect:/main";
 	}	
 }

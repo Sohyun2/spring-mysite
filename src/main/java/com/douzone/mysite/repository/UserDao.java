@@ -27,6 +27,8 @@ public class UserDao {
 		map.put("password", password);
 
 		UserVo userVo = sqlSession.selectOne("user.getByEmailAndPassword", map);
+		System.out.println(userVo);
+		
 		return userVo;
 	}
 
@@ -35,10 +37,13 @@ public class UserDao {
 		sqlSession.update("user.modifyUserInfo", vo);
 	}
 
-	// ?
+	// 회원가입 시 이메일 존재유무 확인 method
 	public UserVo get(String email) {
-		// return sqlSession.selectOne("user.getByEmail", email);
-		return null;
+		return sqlSession.selectOne("user.getByEmail", email);
+	}
+
+	public UserVo get(long no) {		
+		return sqlSession.selectOne( "user.getByNo", no );
 	}
 
 }

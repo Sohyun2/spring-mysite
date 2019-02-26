@@ -33,4 +33,17 @@ public class UserService {
 	public void modify(UserVo vo) {
 		userDao.update(vo);
 	}
+	
+	public UserVo getUser( String email, String password ) {
+		return userDao.get( email, password );
+	}
+
+	public UserVo getUser(long no) {
+		return userDao.get(no);
+	}
+
+	public boolean existEmail(String email) {
+		UserVo userVo = userDao.get(email);
+		return userVo != null;
+	}
 }

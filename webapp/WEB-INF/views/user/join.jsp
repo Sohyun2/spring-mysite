@@ -8,7 +8,6 @@
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
 <script type="text/javascript">
 $(function(){
-	/*
 	$("#join-form").submit(function(){
 		//1. 이름 체크
 		if($("#name").val() == ""){
@@ -48,7 +47,6 @@ $(function(){
 		
 		return true;
 	});
-	*/
 	
 	$("#email").change(function() {
 		$("#btn-checkemail").show();
@@ -62,12 +60,12 @@ $(function(){
 		}
 		
 		$.ajax({
-			url: "${pageContext.servletContext.contextPath }/api/user",
+			url: "${pageContext.servletContext.contextPath }/user/api/checkemail",
 			type: "post",
 			dataType: "json",
-			data: "a=ajax-checkemail&email=" + email,
+			data: "email=" + email,
 			success: function(response){
-				if(response.exist == true){
+				if(response.data == true){
 					alert("이미 존재하는 이메일입니다. 다른 이메일을 사용해 주세요.");
 					$("#email").val("").focus();
 					return;

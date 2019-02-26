@@ -2,8 +2,6 @@ package com.douzone.mysite.controller;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +14,7 @@ import com.douzone.mysite.service.BoardService;
 import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.CommentVo;
 import com.douzone.mysite.vo.UserVo;
+import com.douzone.security.AuthUser;
 
 @Controller
 @RequestMapping("/board")
@@ -52,9 +51,9 @@ public class BoardController {
 		return "/board/insert";
 	}
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
-	public ModelAndView insert(HttpSession session, @ModelAttribute BoardVo vo) {
+	public ModelAndView insert(@AuthUser UserVo authUser, @ModelAttribute BoardVo vo) {
 		System.out.println(vo);
-		boardService.insert((UserVo)session.getAttribute("authuser"), vo);
+		boardService.insert(authUser, vo);
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/board/list");
@@ -88,9 +87,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/reply", method=RequestMethod.POST)
-	public String reply(@RequestParam("no")Long no, BoardVo vo, HttpSession session) { //no는 글번호
-		UserVo userVo = (UserVo) session.getAttribute("authuser");
-		boardService.reply(no, vo, userVo);
+	public String reply(@RequestParam("no")Long no, BoardVo vo, @AuthUser UserVo authUser) { //no는 글번호
+		boardService.reply(no, vo, authUser);
 		
 		return "redirect:/board/list";
 	}
@@ -99,10 +97,9 @@ public class BoardController {
 	public ModelAndView comment(
 			@RequestParam("no")Long no, // 글번호
 			CommentVo vo, // content
-			HttpSession session) { //authuser
+			@AuthUser UserVo authUser) { //authuser
 		
-		UserVo userVo = (UserVo) session.getAttribute("authuser");
-		boardService.comment(no, vo, userVo);
+		boardService.comment(no, vo, authUser);
 		
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/board/detail");

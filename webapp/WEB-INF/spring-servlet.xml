@@ -11,7 +11,23 @@
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<!-- validator, conversionService, messageConverter를 자동 등록 -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven>
+		<!-- message Converter -->
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html; charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+		
+		<!-- Controller의 HandlerArgument Resolver 등록 -->
+		<mvc:argument-resolvers>
+			<bean class="com.douzone.security.AuthUserHandlerMethodArgumentResolver" />
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
 
 	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
 	<mvc:default-servlet-handler />
@@ -21,10 +37,39 @@
 	<context:component-scan
 		base-package="com.douzone.mysite.controller" />
 
+	<!-- Interceptors -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/user/auth" />
+			<bean class="com.douzone.security.AuthLoginInterceptor" />
+		</mvc:interceptor>
+
+		<mvc:interceptor>
+			<mvc:mapping path="/user/logout" />
+			<bean class="com.douzone.security.AuthLogoutInterceptor" />
+		</mvc:interceptor>
+<!-- 
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/" />
+			<bean class="com.douzone.security.AuthAdminInterceptor" />
+		</mvc:interceptor> -->
+
+
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/user/auth" />
+			<mvc:exclude-mapping path="/user/logout" />
+			<!-- <mvc:exclude-mapping path="/admin/" /> -->
+			<mvc:exclude-mapping path="/assets/*" />
+			<bean class="com.douzone.security.AuthInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 	<!-- ViewResolver 설정  -->
-	<bean id="viewResolve" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+	<bean id="viewResolve"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
 		<property name="order" value="1" />
