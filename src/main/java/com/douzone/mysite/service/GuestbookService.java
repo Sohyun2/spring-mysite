@@ -18,12 +18,19 @@ public class GuestbookService {
 		List<GuestbookVo> list = guestbookDao.getList();
 		return list;
 	}
-	
+
 	public void insert(GuestbookVo vo) {
 		guestbookDao.insert(vo);
 	}
 	
 	public void delete(GuestbookVo vo ) {
 		guestbookDao.delete(vo);
+	}
+	
+
+	// ajax
+	public List<GuestbookVo> getList(Integer p) {
+		p = (p-1) * 5;
+		return guestbookDao.getList(p);
 	}
 }

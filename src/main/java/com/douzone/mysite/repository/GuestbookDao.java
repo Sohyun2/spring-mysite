@@ -85,4 +85,10 @@ public class GuestbookDao {
 		return vo;
 	}
 
+	////////////////////// ajax /////////////////////
+	// ajax list 가져오기
+	public List<GuestbookVo> getList(Integer p) {
+		return sqlSession.selectList("guestbook.getListByPage", p);
+	}
+
 }

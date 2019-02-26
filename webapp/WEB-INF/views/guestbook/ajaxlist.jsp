@@ -71,13 +71,13 @@
 
 		++page;
 		$.ajax({
-			url : "/mysite2/api/guestbook?a=ajax-list&p=" + page,
-			type : "get",
+			url : "${pageContext.servletContext.contextPath }/guestbook/ajax/list",
+			type : "post",
 			dataType : "json",
-			data : "",
+			data : "p=" + page,
 			success : function(response) {
 				if (response.result == "fail") {
-					console.warn(response.data);
+					console.warn(response.message);
 					return;
 				}
 
@@ -191,10 +191,10 @@
 			console.log("message : " + message);
 			
 			$.ajax({
-				url: "/mysite2/api/guestbook",
+				url: "${pageContext.servletContext.contextPath }/guestbook/ajax/insert",
 				type: "post",
 				dataType: "json",
-				data: "a=ajax-insert&name=" + name + "&password=" + password + "&message=" + message,
+				data: "name=" + name + "&password=" + password + "&message=" + message,
 				success: function(response) {
 					if (response.result == "fail") {
 						console.warn(response.data);
@@ -228,7 +228,7 @@
 		});
 
 		// 최초 리스트 가져오기
-		// fetchList();
+		//fetchList();
 	});
 </script>
 </head>
