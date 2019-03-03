@@ -114,12 +114,12 @@
 					console.log(pw);
 					
 					$.ajax({
-						url: "/mysite2/api/guestbook",
+						url: "${pageContext.servletContext.contextPath }/guestbook/ajax/delete",
 						type: "post",
 						dataType: "json",
-						data: "a=ajax-delete&no=" + no + "&pw=" + pw,
+						data: "no=" + no + "&pw=" + pw,
 						success: function(response) {
-							if(response.result == 1) {
+							if(response.data) { // true
 								console.log("삭제 성공");
 								// dialog clear
 								$("#password-delete").val("");
@@ -200,9 +200,9 @@
 						console.warn(response.data);
 						return;
 					}
-					fetchList();
+					//fetchList();
 					//console.log(response.data);
-					//render(response.data, true);
+					render(response.data, true);
 				},
 				error: function(xhr, status, e) {
 					//console.error(status + " : " + e);

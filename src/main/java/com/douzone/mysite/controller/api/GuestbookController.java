@@ -24,6 +24,7 @@ public class GuestbookController {
 		
 		return "guestbook/ajaxlist";
 	}
+	
 	@ResponseBody
 	@RequestMapping("/list")
 	public JSONResult list(@RequestParam("p")Integer p) {
@@ -39,5 +40,30 @@ public class GuestbookController {
 		}
 		
 		return JSONResult.success(list);
+	}
+
+	@ResponseBody
+	@RequestMapping("/insert")
+	public JSONResult insert(@RequestParam("name")String name, @RequestParam("password")String password, @RequestParam("message")String message) {
+		GuestbookVo vo = new GuestbookVo();
+		vo.setName(name);
+		vo.setPassword(password);
+		vo.setMessage(message);
+		
+		guestbookService.insert(vo); // insert후 방금 들어간 no값 가져오기
+		
+		System.out.println(vo);
+		return JSONResult.success(vo);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/delete")
+	public JSONResult delete(@RequestParam("no")Long no, @RequestParam("pw")String pw) {
+		GuestbookVo vo = new GuestbookVo();
+		vo.setNo(no);
+		vo.setPassword(pw);
+		
+		boolean data = guestbookService.delete(vo); // true = 1;
+		return JSONResult.success(data);
 	}
 }

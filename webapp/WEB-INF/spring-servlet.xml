@@ -14,7 +14,8 @@
 	<mvc:annotation-driven>
 		<!-- message Converter -->
 		<mvc:message-converters>
-			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+			<bean
+				class="org.springframework.http.converter.StringHttpMessageConverter">
 				<property name="supportedMediaTypes">
 					<list>
 						<value>text/html; charset=UTF-8</value>
@@ -22,15 +23,20 @@
 				</property>
 			</bean>
 		</mvc:message-converters>
-		
+
 		<!-- Controller의 HandlerArgument Resolver 등록 -->
 		<mvc:argument-resolvers>
-			<bean class="com.douzone.security.AuthUserHandlerMethodArgumentResolver" />
+			<bean
+				class="com.douzone.security.AuthUserHandlerMethodArgumentResolver" />
 		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
 
 	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
 	<mvc:default-servlet-handler />
+
+	<!-- the mvc resources mapping url(virtual) -->
+	<mvc:resources mapping="/uploads/images/**"
+		location="file:/uploads/" />
 
 	<!-- annotation 설정 -->
 	<context:annotation-config />
@@ -48,12 +54,6 @@
 			<mvc:mapping path="/user/logout" />
 			<bean class="com.douzone.security.AuthLogoutInterceptor" />
 		</mvc:interceptor>
-<!-- 
-		<mvc:interceptor>
-			<mvc:mapping path="/admin/" />
-			<bean class="com.douzone.security.AuthAdminInterceptor" />
-		</mvc:interceptor> -->
-
 
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
@@ -75,4 +75,22 @@
 		<property name="order" value="1" />
 	</bean>
 
+	<!-- 멀티파트 리졸버 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 최대업로드 가능한 바이트크기 -->
+		<property name="maxUploadSize" value="52428800" />
+		<!-- 디스크에 임시 파일을 생성하기 전에 메모리에 보관할수있는 최대 바이트 크기 -->
+		<!-- property name="maxInMemorySize" value="52428800" / -->
+		<!-- defaultEncoding -->
+		<property name="defaultEncoding" value="utf-8" />
+	</bean>
+	<!-- MessageSource -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>messages/messages_ko</value>
+			</list>
+		</property>
+	</bean>
 </beans>

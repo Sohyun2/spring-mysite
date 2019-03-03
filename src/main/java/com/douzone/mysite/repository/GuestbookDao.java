@@ -29,13 +29,14 @@ public class GuestbookDao {
 	}
 
 	// guestbook 등록
-	public void insert(GuestbookVo vo) {
-		sqlSession.insert("guestbook.insert", vo);		
+	public long insert(GuestbookVo vo) {
+		long no = sqlSession.insert("guestbook.insert", vo);	
+		return no;
 	}
 
 	// guestbook 삭제
-	public void delete(GuestbookVo vo) {
-		sqlSession.delete("guestbook.delete", vo);
+	public boolean delete(GuestbookVo vo) {
+		return 1 == sqlSession.delete("guestbook.delete", vo);
 	}
 	
 	// ?

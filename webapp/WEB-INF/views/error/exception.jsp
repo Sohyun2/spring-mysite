@@ -9,7 +9,7 @@
 <body>
 	<h1>무슨 일이 일어났는지 저도 잘 모르겠어요. - 기덕샌새</h1>
 	<h4>${uri }</h4>
-	<pre style="color:red; font-weight:bold">
+	<pre style="font-weight:bold">
 		${exception }
 	</pre>
 </body>

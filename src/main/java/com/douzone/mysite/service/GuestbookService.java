@@ -19,12 +19,12 @@ public class GuestbookService {
 		return list;
 	}
 
-	public void insert(GuestbookVo vo) {
-		guestbookDao.insert(vo);
+	public long insert(GuestbookVo vo) {
+		return guestbookDao.insert(vo);
 	}
 	
-	public void delete(GuestbookVo vo ) {
-		guestbookDao.delete(vo);
+	public boolean delete(GuestbookVo vo ) {
+		return guestbookDao.delete(vo);
 	}
 	
 

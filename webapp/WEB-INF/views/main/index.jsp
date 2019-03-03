@@ -21,7 +21,7 @@
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
-					<img id="profile" src="${pageContext.servletContext.contextPath }/assets/images/${siteVo.profile }" style="width:120px">
+					<img id="profile" src="${pageContext.servletContext.contextPath }/${siteVo.profile }" style="width:120px">
 					<h2>${siteVo.welcome }</h2>
 					<p>
 						${siteVo.description }
