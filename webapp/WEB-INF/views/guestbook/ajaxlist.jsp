@@ -52,10 +52,11 @@
 	}
 
 	var render = function(vo, mode) {
-		var htmls = "<li data-no='" + vo.no +"'>" + "<strong>" + vo.name
-				+ "</strong>" + "<p>" + vo.message.replace(/\n/g, "<br>")
-				+ "</p>" + "<strong></strong>"
-				+ "<a href='' data-no='" + vo.no + "'>삭제</a>" + "</li>";
+		var htmls = "<li data-no='" + vo.no +"'>" + 
+					"<strong>" + vo.name + "</strong>" + 
+					"<p>" + vo.message.replace(/\n/g, "<br>") + "</p>" + 
+					"<strong></strong>" + "<a href='' data-no='" + vo.no + "'>삭제</a>" + 
+					"</li>";
 
 		if (mode == true) {
 			$("#list-guestbook").prepend(htmls);
@@ -99,6 +100,7 @@
 			}
 		});
 	}
+	
 
 	$(function() {		
 		var dialogDelete = $("#dialog-delete-form").dialog({
@@ -110,8 +112,6 @@
 					
 					//var no = $("#list-guestbook li a").data("no");
 					var pw = $("#password-delete").val();
-					console.log(no);
-					console.log(pw);
 					
 					$.ajax({
 						url: "${pageContext.servletContext.contextPath }/guestbook/ajax/delete",

@@ -10,12 +10,18 @@
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<!-- annotation 설정 -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.douzone.mysite.controller" />
+
+	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
+	<mvc:default-servlet-handler />
+
 	<!-- validator, conversionService, messageConverter를 자동 등록 -->
 	<mvc:annotation-driven>
 		<!-- message Converter -->
 		<mvc:message-converters>
-			<bean
-				class="org.springframework.http.converter.StringHttpMessageConverter">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<property name="supportedMediaTypes">
 					<list>
 						<value>text/html; charset=UTF-8</value>
@@ -26,22 +32,9 @@
 
 		<!-- Controller의 HandlerArgument Resolver 등록 -->
 		<mvc:argument-resolvers>
-			<bean
-				class="com.douzone.security.AuthUserHandlerMethodArgumentResolver" />
+			<bean class="com.douzone.security.AuthUserHandlerMethodArgumentResolver" />
 		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
-
-	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
-	<mvc:default-servlet-handler />
-
-	<!-- the mvc resources mapping url(virtual) -->
-	<mvc:resources mapping="/uploads/images/**"
-		location="file:/uploads/" />
-
-	<!-- annotation 설정 -->
-	<context:annotation-config />
-	<context:component-scan
-		base-package="com.douzone.mysite.controller" />
 
 	<!-- Interceptors -->
 	<mvc:interceptors>
@@ -93,4 +86,8 @@
 			</list>
 		</property>
 	</bean>
+	
+	<!-- the mvc resources mapping url(virtual) -->
+	<mvc:resources mapping="/uploads/images/**" location="file:/uploads/" />
+	
 </beans>

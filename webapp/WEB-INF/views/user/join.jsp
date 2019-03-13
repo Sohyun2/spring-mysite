@@ -11,9 +11,10 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.servletContext.contextPath }/assets/css/user.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/assets/js/jquery/jquery-1.9.0.js"></script>
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 $(function(){
 	$("#join-form").submit(function(){
+		/*
 		//1. 이름 체크
 		if($("#name").val() == ""){
 			alert("이름은 필수 입력 항목입니다.");
@@ -27,7 +28,7 @@ $(function(){
 			$("#email").focus();
 			return false;
 		}
-		
+		*/
 		//2-2. 이메일 중복체크 유무
 		// 중복 체크를 할 경우 체크이미지가 보인다.
 		// 이미지가 보이지 않을 경우 중복체크를 하지 않은 경우이므로..
@@ -36,14 +37,14 @@ $(function(){
 			$("#email").focus();
 			return false;
 		}
-		
+		/*
 		//3. 비밀번호 확인
 		if($("input[type='password']").val() == ""){
 			alert("비밀번호는 필수 입력 항목입니다.");
 			$("input[type='password']").focus();
 			return false;
 		}
-		
+		*/
 		//4. 약관동의
 		if($("#agree-prov").is(":checked") == false){
 			alert("약관 동의를 해야 합니다.");
@@ -86,7 +87,7 @@ $(function(){
 		});
 	});
 });
-</script> -->
+</script>
 </head>
 <body>
 	<div id="container">
@@ -109,7 +110,6 @@ $(function(){
 					</spring:hasBindErrors>
 
 					<label class="block-label" for="email">이메일</label>
-					<%-- <input id="email" name="email" type="text" value="${userVo.email }"> --%>
 					<form:input path="email" />
 					
 					<img id="img-checkemail" style="width:25px; display:none"src="${pageContext.servletContext.contextPath }/assets/images/check.png">
